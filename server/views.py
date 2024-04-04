@@ -2,6 +2,7 @@ from rest_framework import viewsets, exceptions
 from rest_framework.response import Response
 from server.models import Server, Category
 from server.serializers import ServerSerializer
+from django.db.models import Count
 
 
 class SeverListViewSet(viewsets.ViewSet):
@@ -11,6 +12,7 @@ class SeverListViewSet(viewsets.ViewSet):
         category = request.query_params.get("category")
         qty = request.query_params.get("qty")
         by_user = request.query_params.get("by_user") == "true"
+        with_num_members = request.query_params.get("with_num_members") == "true"
         by_server_id = request.query_params.get("by_server_id")
 
         if by_user or by_server_id and not request.user.is_authenticated:
@@ -18,6 +20,9 @@ class SeverListViewSet(viewsets.ViewSet):
 
         if category:
             self.queryset.filter(category=category)
+
+        if with_num_members:
+            self.queryset = self.queryset.annotate(member_count=Count("member"))
 
         if by_user:
             user_id = request.user.id
@@ -32,5 +37,5 @@ class SeverListViewSet(viewsets.ViewSet):
         if qty:
             self.queryset = self.queryset[: int(qty)]
 
-        serializer = ServerSerializer(self.queryset, many=True)
+        serializer = ServerSerializer(self.queryset, many=True, context={"member_count": with_num_members})
         return Response(serializer.data)
