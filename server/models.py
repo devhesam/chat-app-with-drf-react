@@ -4,6 +4,14 @@ from django.conf import settings
 from utils.base_models import BaseModel
 
 
+def server_icon_upload_path(instance, filename):
+    return f"server{instance.id}/server_icon{filename}"
+
+
+def server_banner_upload_path(instance, filename):
+    return f"server{instance.id}/server_banner{filename}"
+
+
 def category_icon_upload_path(instance, filename):
     return f"category{instance.id}/category_icon{filename}"
 
@@ -39,6 +47,8 @@ class Channel(BaseModel):
     server = models.ForeignKey(to=Server, verbose_name=_('server'), on_delete=models.CASCADE,
                                related_name='channel_server')
     is_active = models.BooleanField(verbose_name=_('is active'), default=True)
+    banner = models.ImageField(upload_to=server_banner_upload_path, null=True, blank=True)
+    icon = models.ImageField(upload_to=server_icon_upload_path, null=True, blank=True)
 
     def __str__(self):
         return self.name
