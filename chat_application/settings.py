@@ -1,3 +1,5 @@
+import os.path
+
 from decouple import config, Csv
 from pathlib import Path
 
@@ -42,7 +44,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication'
     ],
-    'EXCEPTION_HANDLER': 'utils.exception_handler.custom_exception_handler',
     'DEFAULT_THROTTLE_RATES': {
     },
     'COERCE_DECIMAL_TO_STRING': False,
@@ -130,6 +131,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

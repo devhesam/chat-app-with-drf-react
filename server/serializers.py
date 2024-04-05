@@ -10,11 +10,12 @@ class ChannelSerializer(serializers.ModelSerializer):
 
 class ServerSerializer(serializers.ModelSerializer):
     member_count = serializers.SerializerMethodField()
-    channel_detail = ChannelSerializer(many=True)
+    # channel_detail = ChannelSerializer(many=True)
 
     class Meta:
         model = Server
-        fields = ["id", "name", "category", "description", "is_active", "created_time", "updated_time"]
+        fields = ["id", "name", "category", "description", "is_active", "member_count",
+                  "created_time", "updated_time"]
 
     def get_member_count(self, obj):
         if hasattr(obj, "member_count"):

@@ -4,9 +4,14 @@ from django.conf import settings
 from utils.base_models import BaseModel
 
 
+def category_icon_upload_path(instance, filename):
+    return f"category{instance.id}/category_icon{filename}"
+
+
 class Category(models.Model):
     name = models.CharField(verbose_name=_('name'), max_length=155)
     description = models.TextField(verbose_name=_('description'), null=True, blank=True)
+    icon = models.FileField(verbose_name=_('icon'), null=True, blank=True, upload_to=category_icon_upload_path)
 
     def __str__(self):
         return self.name
