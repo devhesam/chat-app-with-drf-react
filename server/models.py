@@ -1,6 +1,8 @@
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.conf import settings
+
+from server.validators import validate_icon_image, validate_image_file_extensions
 from utils.base_models import BaseModel
 
 
@@ -19,7 +21,8 @@ def category_icon_upload_path(instance, filename):
 class Category(models.Model):
     name = models.CharField(verbose_name=_('name'), max_length=155)
     description = models.TextField(verbose_name=_('description'), null=True, blank=True)
-    icon = models.FileField(verbose_name=_('icon'), null=True, blank=True, upload_to=category_icon_upload_path)
+    icon = models.FileField(verbose_name=_('icon'), null=True, blank=True, upload_to=category_icon_upload_path,
+                            validators=[validate_icon_image, validate_image_file_extensions])
 
     def __str__(self):
         return self.name
@@ -48,7 +51,8 @@ class Channel(BaseModel):
                                related_name='channel_server')
     is_active = models.BooleanField(verbose_name=_('is active'), default=True)
     banner = models.ImageField(upload_to=server_banner_upload_path, null=True, blank=True)
-    icon = models.ImageField(upload_to=server_icon_upload_path, null=True, blank=True)
+    icon = models.ImageField(upload_to=server_icon_upload_path, null=True, blank=True,
+                             validators=[validate_icon_image, validate_image_file_extensions])
 
     def __str__(self):
         return self.name
