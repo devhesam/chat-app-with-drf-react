@@ -4,6 +4,7 @@ from server.models import Server, Category
 from server.serializers import ServerSerializer
 from django.db.models import Count
 
+
 # Define a viewset for listing servers.
 class SeverListViewSet(viewsets.ViewSet):
     # Initialize the queryset to include all servers.
