@@ -1,7 +1,7 @@
-from channels.routing import ProtocolTypeRouter
+from channels.routing import ProtocolTypeRouter, URLRouter
 import os
 
-from django.core.asgi import get_asgi_application, URLRouter
+from django.core.asgi import get_asgi_application
 from chat_application import urls
 
 
